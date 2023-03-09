@@ -2,7 +2,7 @@
 import { defineConfig } from 'umi';
 import { join } from 'path';
 
-import defaultSettings from './defaultSettings';
+// import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
 
@@ -14,12 +14,14 @@ export default defineConfig({
   dva: {
     hmr: true,
   },
-  layout: {
-    // https://umijs.org/zh-CN/plugins/plugin-layout
-    locale: true,
-    siderWidth: 208,
-    ...defaultSettings,
-  },
+  // Ant Pro自带的布局组件-layout在实际项目中无法完全满足需求，因而需要在@/src/layouts下自定义BaseLayout.tsx布局组件
+  layout: {},
+  // layout: {
+  //   // https://umijs.org/zh-CN/plugins/plugin-layout
+  //   locale: true,
+  //   siderWidth: 208,
+  //   ...defaultSettings,
+  // },
   // https://umijs.org/zh-CN/plugins/plugin-locale
   locale: {
     // default zh-CN

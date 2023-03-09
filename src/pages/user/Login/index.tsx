@@ -1,6 +1,6 @@
 import Footer from '@/components/Footer';
-import { login } from '@/services/ant-design-pro/api';
-import { getFakeCaptcha } from '@/services/ant-design-pro/login';
+import type { LoginType, LoginParams } from '@/services/login';
+import { login, getFakeCaptcha } from '@/services/login';
 import {
   AlipayCircleOutlined,
   LockOutlined,
@@ -34,7 +34,7 @@ const LoginMessage: React.FC<{
 );
 
 const Login: React.FC = () => {
-  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
+  const [userLoginState, setUserLoginState] = useState<LoginType>({});
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
 
@@ -50,7 +50,7 @@ const Login: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (values: API.LoginParams) => {
+  const handleSubmit = async (values: LoginParams) => {
     try {
       // 登录
       const msg = await login({ ...values, type });
@@ -83,9 +83,7 @@ const Login: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.lang} data-lang>
-        {SelectLang && <SelectLang />}
-      </div>
+      <div className={styles.lang}>{SelectLang && <SelectLang />}</div>
       <div className={styles.content}>
         <LoginForm
           logo={<img alt="logo" src="/logo.svg" />}
@@ -105,7 +103,7 @@ const Login: React.FC = () => {
             <WeiboCircleOutlined key="WeiboCircleOutlined" className={styles.icon} />,
           ]}
           onFinish={async (values) => {
-            await handleSubmit(values as API.LoginParams);
+            await handleSubmit(values as LoginParams);
           }}
         >
           <Tabs activeKey={type} onChange={setType}>
@@ -253,12 +251,8 @@ const Login: React.FC = () => {
                   },
                 ]}
                 onGetCaptcha={async (phone) => {
-                  const result = await getFakeCaptcha({
-                    phone,
-                  });
-                  if (result === false) {
-                    return;
-                  }
+                  await getFakeCaptcha(phone);
+
                   message.success('获取验证码成功！验证码为：1234');
                 }}
               />

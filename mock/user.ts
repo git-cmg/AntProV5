@@ -29,7 +29,7 @@ const getAccess = () => {
 // 代码中会兼容本地 service mock 以及部署站点的静态数据
 export default {
   // 支持值为 Object 和 Array
-  'GET /api/currentUser': (req: Request, res: Response) => {
+  'GET /api/current': (req: Request, res: Response) => {
     if (!getAccess()) {
       res.status(401).send({
         data: {
@@ -44,9 +44,11 @@ export default {
     res.send({
       success: true,
       data: {
-        name: 'Serati Ma',
-        avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
-        userid: '00000001',
+        user_name: 'Serati Ma',
+        user_profile:
+          'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+        user_id: '00000001',
+        user_status: 1,
         email: 'antdesign@alipay.com',
         signature: '海纳百川，有容乃大',
         title: '交互专家',
@@ -117,7 +119,19 @@ export default {
       address: 'Sidney No. 1 Lake Park',
     },
   ],
-  'POST /api/login/account': async (req: Request, res: Response) => {
+  'GET /api/current/menu': {
+    success: true,
+    data: [
+      {
+        menu_parent_id: 0,
+        menu_id: 1,
+        path: '/welcome',
+        name: 'welcome',
+        icon: 'smile',
+      },
+    ],
+  },
+  'POST /api/login': async (req: Request, res: Response) => {
     const { password, username, type } = req.body;
     await waitTime(2000);
     if (password === 'ant.design' && username === 'admin') {
@@ -155,7 +169,7 @@ export default {
     });
     access = 'guest';
   },
-  'POST /api/login/outLogin': (req: Request, res: Response) => {
+  'POST /api/outLogin': (req: Request, res: Response) => {
     access = '';
     res.send({ data: {}, success: true });
   },

@@ -3,13 +3,16 @@ import RightContent from '@/components/RightContent';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { PageLoading, SettingDrawer } from '@ant-design/pro-components';
-import type { RunTimeLayoutConfig } from 'umi';
+import type { RunTimeLayoutConfig, RequestConfig } from 'umi';
 import { history, Link } from 'umi';
 import defaultSettings from '../config/defaultSettings';
-import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
+import { queryCurrentUser, queryMenuData } from '@/services/user';
+import type { API } from '@/services/API';
+import { API_KEY, getToken } from '@/utils/auth';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
+const { AXIOS_TIMEOUT, ApiUrl } = window.g;
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
@@ -22,8 +25,10 @@ export const initialStateConfig = {
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
   currentUser?: API.CurrentUser;
+  menuData?: API.MenuType[];
   loading?: boolean;
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
+  fetchMenuData?: () => Promise<API.MenuType[] | undefined>;
 }> {
   const fetchUserInfo = async () => {
     try {
@@ -34,17 +39,30 @@ export async function getInitialState(): Promise<{
     }
     return undefined;
   };
+  const fetchMenuData = async () => {
+    try {
+      const msg = await queryMenuData();
+      return msg.data;
+    } catch (error) {
+      history.push(loginPath);
+    }
+    return undefined;
+  };
   // 如果不是登录页面，执行
   if (history.location.pathname !== loginPath) {
     const currentUser = await fetchUserInfo();
+    const menuData = await fetchMenuData();
     return {
       fetchUserInfo,
+      fetchMenuData,
+      menuData,
       currentUser,
       settings: defaultSettings,
     };
   }
   return {
     fetchUserInfo,
+    fetchMenuData,
     settings: defaultSettings,
   };
 }
@@ -55,7 +73,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
     waterMarkProps: {
-      content: initialState?.currentUser?.name,
+      content: initialState?.currentUser?.user_name,
     },
     footerRender: () => <Footer />,
     onPageChange: () => {
@@ -104,4 +122,35 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     },
     ...initialState?.settings,
   };
+};
+
+export const request: RequestConfig = {
+  prefix: isDev ? '' : ApiUrl,
+  timeout: AXIOS_TIMEOUT,
+  // 请求拦截器，接收一个数组（可以有多个拦截器）
+  requestInterceptors: [
+    (url, options) => {
+      const token = getToken();
+      const op = options;
+      // 设置token
+      if (token) {
+        op.headers = {
+          ...options.headers,
+          [API_KEY]: token,
+        };
+      }
+      return {
+        url,
+        options: op,
+      };
+    },
+  ],
+  // 接口数据转换格式
+  errorConfig: {
+    adaptor: (resData) => {
+      return {
+        ...resData,
+      };
+    },
+  },
 };

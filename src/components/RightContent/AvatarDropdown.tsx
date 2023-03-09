@@ -1,4 +1,4 @@
-import { outLogin } from '@/services/ant-design-pro/api';
+import { outLogin } from '@/services/login';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Menu, Spin } from 'antd';
 import type { ItemType } from 'antd/lib/menu/hooks/useItems';
@@ -65,7 +65,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
 
   const { currentUser } = initialState;
 
-  if (!currentUser || !currentUser.name) {
+  if (!currentUser || !currentUser.user_name) {
     return loading;
   }
 
@@ -101,8 +101,13 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
   return (
     <HeaderDropdown overlay={menuHeaderDropdown}>
       <span className={`${styles.action} ${styles.account}`}>
-        <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
-        <span className={`${styles.name} anticon`}>{currentUser.name}</span>
+        <Avatar
+          size="small"
+          className={styles.avatar}
+          src={currentUser.user_profile}
+          alt="avatar"
+        />
+        <span className={`${styles.name} anticon`}>{currentUser.user_name}</span>
       </span>
     </HeaderDropdown>
   );

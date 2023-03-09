@@ -2,6 +2,7 @@ import { Avatar, List } from 'antd';
 import classNames from 'classnames';
 import React from 'react';
 import styles from './NoticeList.less';
+import type { NoticeIconItemType, NoticeIconItem } from './data';
 
 export type NoticeIconTabProps = {
   count?: number;
@@ -9,13 +10,13 @@ export type NoticeIconTabProps = {
   showViewMore?: boolean;
   style?: React.CSSProperties;
   title: string;
-  tabKey: API.NoticeIconItemType;
-  onClick?: (item: API.NoticeIconItem) => void;
+  tabKey: NoticeIconItemType;
+  onClick?: (item: NoticeIconItem) => void;
   onClear?: () => void;
   emptyText?: string;
   clearText?: string;
   viewMoreText?: string;
-  list: API.NoticeIconItem[];
+  list: NoticeIconItem[];
   onViewMore?: (e: any) => void;
 };
 const NoticeList: React.FC<NoticeIconTabProps> = ({
@@ -43,7 +44,7 @@ const NoticeList: React.FC<NoticeIconTabProps> = ({
   }
   return (
     <div>
-      <List<API.NoticeIconItem>
+      <List<NoticeIconItem>
         className={styles.list}
         dataSource={list}
         renderItem={(item, i) => {
