@@ -39,6 +39,11 @@ export default defineConfig({
   // umi routes: https://umijs.org/docs/routing
   routes,
   access: {},
+  // 生产Html离线版本,思路：
+  // 1、public下创建data.json文件，用于储存接口响应数据，数据格式可参考mock数据
+  // 2、app.tsx中添加'异常处理程序'拦截器，拦截接口并返回data.json中数据。请求超时时间AXIOS_TIMEOUT设置为1
+  // 3、publicPath需设置为'./'
+  // publicPath: './',
   chainWebpack: (config) => {
     config.plugin('moment2dayjs').use('antd-dayjs-webpack-plugin');
 
