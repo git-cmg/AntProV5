@@ -57,6 +57,7 @@
     "echarts": "^5.4.1",
     "echarts-for-react": "^3.0.2",
     "js-file-download": "^0.4.12",
+    "localforage": "^1.10.0",
     "lodash": "^4.17.0",
     "moment": "^2.29.0",
     "nanoid": "^4.0.1",
