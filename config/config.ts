@@ -100,6 +100,7 @@ export default defineConfig({
   exportStatic: {},
   // qiankun 微前端
   // 注意：主应用需要将document.ejs及global.less中的 #root -> #root-master,子应用不需要修改
+  // 子应用路由需配置为 [{component: 'index'}]
   // qiankun: {
   //   // 二选一：主应用 master; 子应用 slave
   //   master:{},
