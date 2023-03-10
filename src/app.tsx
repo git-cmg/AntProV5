@@ -67,6 +67,18 @@ export async function getInitialState(): Promise<{
   };
 }
 
+// 动态配置qiankun，注册子应用。另外，还可以在config.ts中qiankun.master进行静态配置
+// 从接口中获取子应用配置，export 出的 qiankun 变量是一个 promise
+/*export const qiankun = fetch('/config').then(({ apps }) => ({
+  // 注册子应用信息
+  apps,
+  // 完整生命周期钩子请看 https://qiankun.umijs.org/zh/api/#registermicroapps-apps-lifecycles
+  lifeCycles: {},
+  // 启用沙箱的实验性样式隔离特性
+  sandbox: { experimentalStyleIsolation:true },
+  // 支持更多的其他配置，详细看这里 https://qiankun.umijs.org/zh/api/#start-opts
+}));*/
+
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   return {
