@@ -41,6 +41,21 @@ export default defineConfig({
   access: {},
   chainWebpack: (config) => {
     config.plugin('moment2dayjs').use('antd-dayjs-webpack-plugin');
+
+    const staticDir = 'static';
+    // 修改css输出目录
+    config.plugin('extract-css').tap(() => [
+      {
+        filename: `${staticDir}/css/[name].[contenthash:8].css`,
+        chunkFilename: `${staticDir}/css/[name].[contenthash:8].chunk.css`,
+        ignoreOrder: true,
+      },
+    ]);
+
+    // 修改js输出目录
+    config.output
+      .filename(`${staticDir}/js/[name].[hash:8].js`)
+      .chunkFilename(`${staticDir}/js/[name].[contenthash:8].chunk.js`);
   },
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   theme: {
