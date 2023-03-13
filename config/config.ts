@@ -45,8 +45,6 @@ export default defineConfig({
   // 3、publicPath需设置为'./'
   // publicPath: './',
   chainWebpack: (config) => {
-    config.plugin('moment2dayjs').use('antd-dayjs-webpack-plugin');
-
     const staticDir = 'static';
     // 修改css输出目录
     config.plugin('extract-css').tap(() => [
