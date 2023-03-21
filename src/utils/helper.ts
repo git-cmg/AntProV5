@@ -12,11 +12,6 @@ export const formatFromData = (data: Record<string, any>) => {
 };
 
 /**
- * 判空
- */
-export const isNull = (data: any): boolean => _.size(data) === 0;
-
-/**
  * 计算文件大小
  */
 export const byte2size = (bytes: number) => {
