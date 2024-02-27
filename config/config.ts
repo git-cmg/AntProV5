@@ -46,6 +46,7 @@ export default defineConfig({
   // publicPath: './',
   chainWebpack: (config) => {
     const staticDir = 'static';
+    
     // 修改css输出目录
     config.plugin('extract-css').tap(() => [
       {
