@@ -1,7 +1,6 @@
 /**
- * 权限定义文件
- * @see https://umijs.org/zh-CN/plugins/plugin-access
- * */
+ * 权限
+ **/
 import type { API } from '@/services/API';
 
 export default function access(initialState: { currentUser?: API.CurrentUser } | undefined) {
